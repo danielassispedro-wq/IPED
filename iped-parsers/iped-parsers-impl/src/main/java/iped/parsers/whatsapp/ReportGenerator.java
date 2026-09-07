@@ -991,15 +991,29 @@ public class ReportGenerator {
                                 }
                                 String transcription = mediaItem.getMetadata().get(ExtraProperties.TRANSCRIPT_ATTR);
                                 if (transcription != null) {
+                                    boolean editable = mediaItem.getHash() != null && mediaItem.getDataSource() != null
+                                            && (message.getMessageType() == MessageType.AUDIO_MESSAGE
+                                                || message.getMessageType() == MessageType.VIEW_ONCE_AUDIO_MESSAGE);
+                                    if (editable) {
+                                        out.print("<span class=\"iped-transcription\" data-item=\""
+                                                + mediaItem.getId() + "\" data-source=\""
+                                                + SimpleHTMLEncoder.htmlEncode(mediaItem.getDataSource().getUUID())
+                                                + "\" data-hash=\"" + SimpleHTMLEncoder.htmlEncode(mediaItem.getHash())
+                                                + "\"><span class=\"iped-transcription-label\">");
+                                    }
                                     out.print(Messages.getString("ReportGenerator.TranscriptionTitle")); //$NON-NLS-1$
                                     String confidence = mediaItem.getMetadata().get(ExtraProperties.CONFIDENCE_ATTR);
                                     if (confidence != null) {
                                         float score = Float.valueOf(confidence) * 100;
                                         out.print(" [" + (int) score + "%]"); //$NON-NLS-1$ //$NON-NLS-2$
                                     }
-                                    out.println(": <i>"); //$NON-NLS-1$
+                                    out.println(editable ? ": </span><i class=\"iped-transcription-text\">" : ": <i>");
                                     out.println(format(transcription));
-                                    out.println("</i><br>"); //$NON-NLS-1$
+                                    out.println("</i>");
+                                    if (editable) {
+                                        out.println("</span>");
+                                    }
+                                    out.println("<br>");
                                 }
                             } else {
                                 if (thumb != null) {

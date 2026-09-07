@@ -8,6 +8,11 @@ import iped.data.IItemId;
 
 public interface AttachmentSearcher {
 
+    /** Empty means external transcription editing is unavailable. */
+    default List<File> getCaseDirectories() {
+        return java.util.Collections.emptyList();
+    }
+
     File getTmpFile(String luceneQuery);
 
     IItem getItem(String luceneQuery);

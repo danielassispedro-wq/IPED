@@ -57,6 +57,8 @@ public class HtmlLinkViewer extends HtmlViewer implements SelectionListener {
 
     private boolean cheking = false;
 
+    private TranscriptionEditor transcriptionEditor;
+
     public HtmlLinkViewer(AttachmentSearcher attachSearcher) {
         this.attachSearcher = attachSearcher;
         this.fileHandler = new AttachmentHandler();
@@ -71,6 +73,7 @@ public class HtmlLinkViewer extends HtmlViewer implements SelectionListener {
                             Worker.State newState) {
                         if (newState == Worker.State.SUCCEEDED) {
                             updateSelection();
+                            transcriptionEditor = TranscriptionEditor.install(webEngine, attachSearcher);
                             // imprecise, not needed for current chat reports after #633
                             // scrollToPosition();
                         }

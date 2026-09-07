@@ -28,6 +28,15 @@ public class AttachmentSearcherImpl implements AttachmentSearcher {
     private SortedDocValues sdv = null;
 
     @Override
+    public List<File> getCaseDirectories() {
+        List<File> directories = new ArrayList<>();
+        for (iped.engine.data.IPEDSource source : App.get().appCase.getAtomicSources()) {
+            directories.add(source.getCaseDir());
+        }
+        return directories;
+    }
+
+    @Override
     public File getTmpFile(String luceneQuery) {
 
         IItem item = getItem(luceneQuery);
